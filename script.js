@@ -1,21 +1,28 @@
-// Fungsi untuk memulai musik
+// ============================================================
+// 🎵 Fungsi untuk memulai musik
+// ============================================================
 function playMusic() {
   const music = document.getElementById('background-music');
   music.play();
 }
-window.addEventListener('DOMContentLoaded', function() {
+window.addEventListener('DOMContentLoaded', function () {
   playMusic();
 });
 document.body.addEventListener('click', playMusic, { once: true });
+
 const content = document.getElementById('content');
 const footer = document.getElementsByTagName('footer')[0];
 const timer = document.getElementById('timer');
 
+// ============================================================
+// ⏳ Countdown Timer
+// ============================================================
 const second = 1000,
   minute = second * 60,
   hour = minute * 60,
   day = hour * 24;
-let countDown = new Date('Sept 01, 2025 12:00:00').getTime(),
+
+let countDown = new Date('Sept 01, 2025 16:00:00').getTime(),
   x = setInterval(function () {
     let now = new Date().getTime(),
       distance = countDown - now;
@@ -25,74 +32,404 @@ let countDown = new Date('Sept 01, 2025 12:00:00').getTime(),
       document.getElementById('seconds').innerText = Math.floor((distance % (minute)) / second);
 
     if (distance < 0) {
-
       timer.classList.add('d-none');
       confetti();
       clearInterval(x);
       _slideSatu();
     }
-
   }, second)
 
+// ============================================================
+// SLIDE 1 (Birthday + clown prank with global #tap)
+// ============================================================
 const _slideSatu = function () {
-  const tap = document.getElementById('tap');
+  const tap = document.getElementById('tap'); // global clown tap
   const slideSatu = document.getElementById('slideSatu');
   slideSatu.classList.remove('d-none');
   setTimeout(function () {
-    tap.classList.remove('d-none');
-    document.body.addEventListener('click', function () {
-      _slideDua();
-    })
+    tap.classList.remove('d-none'); // show the prank tap
   }, 7000);
 };
 
+function stopAllClownSounds() {
+  const tapSounds = [
+    document.getElementById('tap-sound1'),
+    document.getElementById('tap-sound2'),
+    document.getElementById('tap-sound3')
+  ];
+  tapSounds.forEach(s => {
+    s.pause();
+    s.currentTime = 0; // reset to start
+  });
+}
+
+// ============================================================
+// SLIDE 2 (Notebook page with TypeIt + tap-note)
+// ============================================================
 const _slideDua = function () {
   const slideSatu = document.getElementById('slideSatu');
-  const tap = document.getElementById('tap');
+  const tap = document.getElementById('tap'); // hide prank tap
   const slideDua = document.getElementById('slideDua');
+  stopAllClownSounds();
+  const tapNote = slideDua.querySelector('.tap-note');
+
+  // hide clown tap
+  tap.classList.add('d-none');
 
   setTimeout(function () {
     slideSatu.classList.replace('animate__slideInDown', 'animate__backOutDown');
-    tap.classList.add('d-none');
     setTimeout(function () {
       slideSatu.classList.add('d-none');
     }, 1000);
   }, 1000);
 
   slideDua.classList.remove('d-none');
-  setTimeout(function () {
-    tap.classList.remove('d-none');
-    document.body.addEventListener('click', function () {
-      slideDua.classList.replace('animate__zoomInDown', 'animate__fadeOutLeft');
-      slideDua.classList.remove('animate__delay-2s', 'animate__slow');
-      tap.classList.add('d-none');
-      setTimeout(function () {
-        slideDua.remove();
-        _slideTiga();
-      }, 1000);
+
+  // typing effect
+  new TypeIt("#teks1", {
+    strings: [
+      "lemme syd and u can emp",
+      " ",
+      "- louis (with love)"
+    ],
+    speed: 75,
+    waitUntilVisible: true
+  })  
+    .exec(() => {
+      // only show tap-note when typing finishes
+      tapNote.classList.remove('d-none');
+      tapNote.addEventListener('click', function () {
+        slideDua.classList.replace('animate__zoomInDown', 'animate__fadeOutLeft');
+        slideDua.classList.remove('animate__delay-2s', 'animate__slow');
+        tapNote.classList.add('d-none');
+        setTimeout(function () {
+          slideDua.remove();
+          _slideTiga();
+        }, 1000);
+      });
     })
-  }, 40000);
+    .go();
 };
 
 const _slideTiga = function () {
-  const tap = document.getElementById('tap');
   const slideTiga = document.getElementById('slideTiga');
+  const tapNote = slideTiga.querySelector('.tap-note');
 
   slideTiga.classList.remove('d-none');
-  setTimeout(function () {
-    tap.classList.remove('d-none');
-    document.body.addEventListener('click', function () {
-      slideTiga.classList.remove('animate__delay-2s', 'animate__slow');
-      slideTiga.classList.replace('animate__fadeInRight', 'animate__fadeOut');
-      tap.remove();
-      setTimeout(function () {
-        slideTiga.remove();
-        _slideEmpat();
-      }, 1000);
-    })
-  }, 43000);
-}
 
+  new TypeIt("#teks2", {
+    strings: [
+      "hi deepesh my hb my fellow brownie minority everywhere including this friendgroup ,,",
+      " ",
+      "have the most wonderfullest day and the most wonderfullest rest of the days of ur life",
+      " ",
+      "bc lowkey ur the most deserving of it compared to the rest of the world say real ! (REAL)",
+      " ",
+      "anyway we love u see u in 2 days stupid bc we gonna run it back !",
+      " ",
+      "- darlene nicol mei angsiangco"
+    ],
+    speed: 75,
+    waitUntilVisible: true
+  })  
+    .exec(() => {
+      tapNote.classList.remove('d-none');
+      tapNote.addEventListener('click', function () {
+        slideTiga.classList.remove('animate__delay-2s', 'animate__slow');
+        slideTiga.classList.replace('animate__fadeInRight', 'animate__fadeOut');
+        tapNote.classList.add('d-none');
+        setTimeout(function () {
+          slideTiga.remove();
+          _slideEmpat();
+        }, 1000);
+      });
+    })
+    .go();
+};
+
+const _slideEmpat = function () {
+  const slideEmpat = document.getElementById('slideEmpat');
+  const tapNote = slideEmpat.querySelector('.tap-note');
+
+  slideEmpat.classList.remove('d-none');
+
+  new TypeIt("#teks3", {
+    strings: [
+      "HAPPY BIRTHDAY DEEPESH!!!",
+      " ",
+      "It's been around a year since we met each other at RC and tbh we didn't really talk much until later.",
+      " ",
+      "However, you are always so friendly and you bring such good vibes into every moment!",
+      " ",
+      "I really enjoy being friends with you and I wish we could play mahjong one last time before you leave sg 😆😆(plz don’t forget us or I WILL haunt you!)",
+      " ",
+      "LETS GO ESCAPE ROOM AGAIN! I'll make sure I will not close the door on you this time. 😂",
+      " ",
+      "HAPPY BIRTHDAY!!!! 🥳",
+      " ",
+      "- yvette"
+    ],
+    speed: 75,
+    waitUntilVisible: true
+  })
+    .exec(() => {
+      tapNote.classList.remove('d-none');
+      tapNote.addEventListener('click', function () {
+        slideEmpat.classList.replace('animate__fadeInRight', 'animate__fadeOut');
+        tapNote.classList.add('d-none');
+        setTimeout(function () {
+          slideEmpat.remove();
+          _slideEnam();
+        }, 1000);
+      });
+    })
+    .go();
+};
+
+// const _slideLima = function () {
+//   const slideLima = document.getElementById('slideLima');
+//   const tapNote = slideLima.querySelector('.tap-note');  
+
+//   slideLima.classList.remove('d-none');
+
+//   new TypeIt("#teks4", {
+//     strings: [
+//       "HAPPY BIRTHDAY DEEPESHH!!!", 
+//       "you’re truely an amazing guy and im so appreciative that you’re always so positive and hyped up!",
+//       "im forever thankful for the moments we have together just laughing and having fun,",
+//       "that’ll be something that i’d truly miss.",
+//       "have an amazing 19th birthday and never change that amazing smile on your face!!",
+//       "",
+//       "with all the love in the world,",
+//       "yee heng"
+//     ],
+//     speed: 75,
+//     waitUntilVisible: true
+//   })
+//   .exec(() => {
+//     tapNote.classList.remove('d-none');
+//     tapNote.addEventListener('click', function () {
+//       slideLima.classList.replace('animate__fadeInRight', 'animate__fadeOut');
+//       tapNote.classList.add('d-none');
+//       setTimeout(function () {
+//         slideLima.remove();
+//         _slideEnam(); // goes to the next slide
+//       }, 1000);
+//     });
+//   })
+//   .go();
+// };
+
+const _slideEnam = function () {
+  const slideEnam = document.getElementById('slideEnam');
+  const tapNote = slideEnam.querySelector('.tap-note');
+
+  slideEnam.classList.remove('d-none');
+
+  new TypeIt("#teks5", {
+    strings: [
+      "Happyyy Bornday Deepesh!!",
+      " ",
+      "Can’t believe we’ve been friends since day 1 ✨✨✨",
+      " ",
+      "Still remember those awkward “what’s your name, what year are you?” moments 😂",
+      " ",
+      "Lunch stories, Red Camp chaos, and all the laughs in between 💅💅💅",
+      " ",
+      "You’ve made it unforgettable! Thanks for always being there, buddy 💯",
+      " ",
+      "Now it’s time to slay 3.2, grab that shiny 4.0 GPA,",
+      " ",
+      "and shine bright like a diamond at RC 2025! 💎",
+      " ",
+      "Have the BEST birthday everrrr! 🎉🎂",
+      " ",
+      "- hui en aka mei nv"
+    ],
+    speed: 75,
+    waitUntilVisible: true
+  })
+  
+    .exec(() => {
+      tapNote.classList.remove('d-none');
+      tapNote.addEventListener('click', function () {
+        slideEnam.classList.replace('animate__fadeInRight', 'animate__fadeOut');
+        tapNote.classList.add('d-none');
+        setTimeout(function () {
+          slideEnam.remove();
+          _slideTujuh();
+        }, 1000);
+      });
+    })
+    .go();
+};
+
+const _slideTujuh = function () {
+  const slideTujuh = document.getElementById('slideTujuh');
+  const tapNote = slideTujuh.querySelector('.tap-note');
+
+  slideTujuh.classList.remove('d-none');
+
+  new TypeIt("#teks6", {
+    strings: [
+      "HI JAMES, HAPPIEST 19TH BIRTHDAY! 🎉",
+      " ",
+      "Wishing you the most happiest and sweetest 19th birthday ever 😍😍",
+      " ",
+      "Thank you for the fun memories together,",
+      " ",
+      "and I hope to have many more with you!!",
+      "Good luck for your FINAL SEM and also RC ☺️☺️",
+      " ",
+      "ILY lots 💖 Have a great 19th birthday hehe",
+      "yeowxian"
+    ],
+    speed: 75,
+    waitUntilVisible: true
+  })  
+    .exec(() => {
+      tapNote.classList.remove('d-none');
+      tapNote.addEventListener('click', function () {
+        slideTujuh.classList.replace('animate__fadeInRight', 'animate__fadeOut');
+        tapNote.classList.add('d-none');
+        setTimeout(function () {
+          slideTujuh.remove();
+          _slideDelapan();
+        }, 1000);
+      });
+    })
+    .go();
+};
+
+const _slideDelapan = function () {
+  const slideDelapan = document.getElementById('slideDelapan');
+  const tapNote = slideDelapan.querySelector('.tap-note');
+
+  slideDelapan.classList.remove('d-none');
+
+  new TypeIt("#teks7", {
+    strings: [
+      "Janelle"
+    ],
+    speed: 75,
+    waitUntilVisible: true
+  })
+    .exec(() => {
+      tapNote.classList.remove('d-none');
+      tapNote.addEventListener('click', function () {
+        slideDelapan.classList.replace('animate__fadeInRight', 'animate__fadeOut');
+        tapNote.classList.add('d-none');
+        setTimeout(function () {
+          slideDelapan.remove();
+          _slideSembilan();
+        }, 1000);
+      });
+    })
+    .go();
+};
+
+const _slideSembilan = function () {
+  const slideSembilan = document.getElementById('slideSembilan');
+  const tapNote = slideSembilan.querySelector('.tap-note');
+
+  slideSembilan.classList.remove('d-none');
+
+  new TypeIt("#teks8", {
+    strings: [
+      "Lakshana"
+    ],
+    speed: 75,
+    waitUntilVisible: true
+  })
+    .exec(() => {
+      tapNote.classList.remove('d-none');
+      tapNote.addEventListener('click', function () {
+        slideSembilan.classList.replace('animate__fadeInRight', 'animate__fadeOut');
+        tapNote.classList.add('d-none');
+        setTimeout(function () {
+          slideSembilan.remove();
+          _slideSepuluhSatu();
+        }, 1000);
+      });
+    })
+    .go();
+};
+
+const _slideSepuluhSatu = function () {
+  const slideSepuluhSatu = document.getElementById('slideSepuluhSatu');
+  const tapNote = slideSepuluhSatu.querySelector('.tap-note');
+
+  slideSepuluhSatu.classList.remove('d-none');
+
+  new TypeIt("#teks10", {
+    strings: [
+      "HAPPY BIRTHDAY DEEPESHH!!!",
+      "  ",
+      "you’re truely an amazing guy and im so appreciative that you’re always so positive and hyped up!",
+      "  ",
+      "im forever thankful for the moments we have together just laughing and having fun, that’ll be something that i’d truly miss.",
+      "  ",
+      "have an amazing 19th birthday and never change that amazing smile on your face!!",
+      " ",
+      "with all the love in the world,",
+      "yee heng"
+    ],
+    speed: 75,
+    waitUntilVisible: true
+  })
+  .exec(() => {
+    tapNote.classList.remove('d-none');
+    tapNote.addEventListener('click', function () {
+      slideSepuluhSatu.classList.replace('animate__fadeInRight', 'animate__fadeOut');
+      tapNote.classList.add('d-none');
+      setTimeout(function () {
+        slideSepuluhSatu.remove();
+        _slideSepuluh(); 
+      }, 1000);
+    });
+  })
+  .go();
+};
+
+const _slideSepuluh = function () {
+  const slideSepuluh = document.getElementById('slideSepuluh');
+  const tapNote = slideSepuluh.querySelector('.tap-note');
+
+  slideSepuluh.classList.remove('d-none');
+
+  new TypeIt("#teks9", {
+    strings: [
+      "And finally... the creator of this website.",
+      " ",
+      "This little project was built specially for you, to celebrate your 19th birthday in a way that's unforgettable.",
+      " ",
+      "Every animation, every word, and every slide was made with nothing but good vibes and appreciation for you.",
+      " ",
+      "Happy 19th Birthday, HB 🎉 May this year bring you endless laughter, growth, and memories that you’ll carry forever.",
+      " ",
+      "Talk soon, Cheers from Vietnam LOL",
+      "- Morgen"
+    ],
+    speed: 75,
+    waitUntilVisible: true
+  })  
+    .exec(() => {
+      tapNote.classList.remove('d-none');
+      tapNote.addEventListener('click', function () {
+        slideSepuluh.classList.replace('animate__fadeInRight', 'animate__fadeOut');
+        tapNote.classList.add('d-none');
+        setTimeout(function () {
+          _slideSebelas(); // continue your existing flow (Yes/No box)
+          console.log("All slides finished!");
+        }, 1000);
+      });
+    })
+    .go();
+};
+
+// ============================================================
+// SLIDE 11 (Yes/No Box)
+// ============================================================
 function getRandomPosition(element) {
   var x = document.body.offsetHeight - element.clientHeight;
   var y = document.body.offsetWidth - element.clientWidth;
@@ -101,73 +438,136 @@ function getRandomPosition(element) {
   return [randomX, randomY];
 };
 
-const _slideEmpat = function () {
-  const slideEmpat = document.getElementById('slideEmpat');
+const _slideSebelas = function () {
+  const slideSebelas = document.getElementById('slideSebelas');
   const btn = document.getElementsByTagName('button');
-  slideEmpat.classList.remove('d-none');
+  slideSebelas.classList.remove('d-none');
 
   btn[0].addEventListener('click', function () {
-    var xy = getRandomPosition(slideEmpat);
-    slideEmpat.style.top = xy[0] + 'px';
-    // slideEmpat.style.left = xy[1] + 'px';
+    var xy = getRandomPosition(slideSebelas);
+    slideSebelas.style.top = xy[0] + 'px';
   });
 
   btn[1].addEventListener('click', function () {
-    slideEmpat.classList.replace('animate__fadeInDown', 'animate__bounceOut');
-    slideEmpat.classList.remove('animate__delay-2s');
+    slideSebelas.classList.replace('animate__fadeInDown', 'animate__bounceOut');
+    slideSebelas.classList.remove('animate__delay-2s');
     setTimeout(function () {
-      slideEmpat.remove()
+      slideSebelas.remove()
       setTimeout(() => {
-        _slideLima();
+        _slideDuabelas();
       }, 500);
     }, 1000);
   })
 };
 
-const _slideLima = function () {
-  const slideLima = document.getElementById('slideLima');
-  slideLima.classList.remove('d-none');
+// ============================================================
+// SLIDE 12 (Image + Thank You)
+// ============================================================
+const _slideDuabelas = function () {
+  const slideDuabelas = document.getElementById('slideDuabelas');
   const trims = document.getElementById('trims');
+  slideDuabelas.classList.remove('d-none');
 
   setTimeout(() => {
     trims.classList.remove('d-none');
   }, 1000);
 
-  slideLima.addEventListener('animationend', () => {
-    slideLima.classList.add('animate__delay-3s')
-    slideLima.classList.replace('animate__bounceIn', 'animate__fadeOut');
+  slideDuabelas.addEventListener('animationend', () => {
+    slideDuabelas.classList.add('animate__delay-3s');
+    slideDuabelas.classList.replace('animate__bounceIn', 'animate__fadeOut');
     trims.classList.add('animate__animated', 'animate__fadeOut', 'animate__delay-3s');
     setTimeout(() => {
       trims.remove();
       setTimeout(() => {
-        slideLima.remove();
-        _slideEnam();
+        slideDuabelas.remove();
+        console.log("🎉 End of Website Slideshow!");
       }, 1000);
     }, 6000);
   });
 };
 
-const _slideEnam = function () {
-  const slideEnam = document.getElementById('slideEnam');
-  slideEnam.classList.remove('d-none');
+// ============================================================
+// SLIDE 13 (Final page)
+// ============================================================
+const _slideTigabelas = function () {
+  const slideTigabelas = document.getElementById('slideTigabelas');
+  slideTigabelas.classList.remove('d-none');
 };
+// ============================================================
+// CLOWN PRANK TAP (global #tap)
+// ============================================================
+let tapCount = 0;
 
+function handleTap() {
+  tapCount++;
 
-new TypeIt("#teks1", {
-  strings: ["Hari ini, saya langitkan semua doa terbaik saya untuk kamu.", "Semoga hal-hal yang membuat kamu runtuh turut menjadi alasan kamu untuk tetap tumbuh.", "Semoga dunia senantiasa menjaga kamu dimanapun kamu berada.", "Semoga hari-hari kamu selalu diiringi cinta yang tak pernah ada batasnya." , "Semoga setiap langkahmu dimudahkan hingga tercapai apa yang kamu inginkan."],
-  startDelay: 4000,
-  speed: 75,
-  waitUntilVisible: true
-}).go();
+  const clown = document.getElementById('clownSlide');
+  const tap = document.getElementById('tap');
+  const music = document.getElementById('background-music'); // 🎵 main bg music
 
-new TypeIt("#teks2", {
-  strings: ["Dengan ataupun tanpaku, semoga semesta selalu membahagiakan kamu bagimanapun caranya.", " ", "barakallah fi umrik, terima kasih sudah bertahan sampai sejauh ini.", " ", "- Wish all you the best"],
-  startDelay: 2000,
-  speed: 75,
-  waitUntilVisible: true
-}).go();
+  // 🎵 Array of clown sounds
+  const tapSounds = [
+    document.getElementById('tap-sound1'),
+    document.getElementById('tap-sound2'),
+    document.getElementById('tap-sound3')
+  ];
 
+  function playRandomTapSound() {
+    // stop/reset all first
+    tapSounds.forEach(s => { s.pause(); s.currentTime = 0; });
 
+    // pick one random
+    const randomSound = tapSounds[Math.floor(Math.random() * tapSounds.length)];
+
+    // 🔇 pause background music
+    music.pause();
+
+    // play the sound
+    randomSound.play();
+
+    // when it ends, resume music
+    randomSound.onended = () => {
+      music.play();
+    };
+  }
+
+  if (tapCount === 1 || tapCount === 2) {
+    music.pause();
+
+    // Show clown
+    clown.classList.add('show');
+    setTimeout(() => {
+      clown.classList.remove('show');
+    }, 1500);
+
+    // 🔊 Play random funny sound (music paused in function)
+    playRandomTapSound();
+
+    // Move the tap button again
+    const randomX = Math.floor(Math.random() * 80) + 10;
+    const randomY = Math.floor(Math.random() * 70) + 10;
+    tap.style.left = randomX + "%";
+    tap.style.top = randomY + "%";
+    tap.style.bottom = "auto";
+    tap.style.transform = "translate(-50%, -50%)";
+
+  } else if (tapCount === 3) {
+    // 🔇 Kill clown sounds
+    stopAllClownSounds();
+  
+    // Resume bg music
+    music.play();
+  
+    // Proceed
+    _slideDua();
+  }  
+}
+
+document.getElementById('tap').addEventListener('click', handleTap);
+
+// ============================================================
+// Extra typing for trims
+// ============================================================
 new TypeIt("#trims", {
   strings: ["Terimakasih."],
   startDelay: 2000,
@@ -175,8 +575,6 @@ new TypeIt("#trims", {
   loop: false,
   waitUntilVisible: true,
 }).go();
-
-
 
 'use strict';
 
